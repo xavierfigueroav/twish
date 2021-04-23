@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+    django:
+        build:
+            context: backend/
+            dockerfile: Dockerfile
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./backend:/app
+    
+    react:
+        build:
+            context: frontend/
+            dockerfile: Dockerfile
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./frontend:/app
