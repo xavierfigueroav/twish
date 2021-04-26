@@ -3,10 +3,10 @@ import Header from '../components/Header';
 
 const Search = () => {
     return (
-        <div className="mt-5">
+        <div className="m-5">
             <Header></Header>
             <main className="mt-16 mx-auto text-center space-y-3 sm:w-3/4">
-                <div className="space-x-3 space-y-3 mx-auto mb-14 sm:mb-10 sm:w-1/2">
+                <div className="space-x-3 space-y-3 mx-auto mb-10 md:w-3/4 lg:w-1/2">
                     <p>
                         Escribe un término de búsqueda y recolectaremos tweets asociados 
                         a él para luego mostrártelos clasificados en dos categorías:
@@ -23,7 +23,7 @@ const Search = () => {
                 <form className="space-y-3 mx-auto">
                     <input className="block bg-gray-100 placeholder-gray-400
                     border-2 border-transparent focus:outline-none focus:border-gray-300 rounded-md
-                    font-semibold text-center h-11 w-4/5 mx-auto py-2 px-3
+                    font-semibold text-center h-11 w-11/12 mx-auto py-2 px-3
                     sm:inline-block sm:w-1/2 sm:mr-3"
                     type="text" placeholder="Escribe tu búsqueda. Ej: oxígeno" autoFocus />
                     <select className="block bg-gray-100 placeholder-gray-400
