@@ -19,6 +19,7 @@ services:
             - "8000:8000"
         volumes:
             - ./backend:/app
+            - static:/static
         environment:
             - POSTGRES_HOST=db
         depends_on:
@@ -32,5 +33,9 @@ services:
             - "3000:3000"
         volumes:
             - ./frontend:/app
+            - static:/app/src/admin
         depends_on:
             - django
+
+volumes:
+    static:
