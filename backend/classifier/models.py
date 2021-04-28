@@ -5,6 +5,7 @@ from django.db import models
 from safedelete.models import SafeDeleteModel
 from safedelete.models import SOFT_DELETE_CASCADE
 
+from .storage import OverwriteableStorage
 from .utils import logo_filename
 
 
@@ -117,7 +118,11 @@ class App(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=200)
     about = models.TextField()
-    logo = models.ImageField(upload_to=logo_filename, null=True, blank=True)
+    logo = models.ImageField(
+        upload_to=logo_filename,
+        storage=OverwriteableStorage,
+        null=True, blank=True
+    )
     enable_email_notification = models.BooleanField(default=False, blank=True)
     allow_user_to_choose_predictor = models.BooleanField(
         default=False, blank=True
