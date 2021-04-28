@@ -1,3 +1,9 @@
-from django.contrib import admin # noqa
+from django.contrib import admin
 
-# Register your models here.
+from .models import App
+from .models import PredictionLabel
+from .models import Predictor
+
+admin.site.register(App)
+admin.site.register(Predictor)
+admin.site.register(PredictionLabel)
