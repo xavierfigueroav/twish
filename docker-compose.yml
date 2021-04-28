@@ -11,6 +11,11 @@ services:
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
 
+    queue:
+        image: rabbitmq
+        volumes:
+            - ./queue:/queue
+
     django:
         build:
             context: backend/
@@ -24,6 +29,15 @@ services:
             - POSTGRES_HOST=db
         depends_on:
             - db
+
+    celery:
+        build: ./backend
+        command: celery -A backend worker -l info
+        volumes:
+            - ./backend:/app
+        depends_on:
+            - queue
+            - django
 
     react:
         build:
