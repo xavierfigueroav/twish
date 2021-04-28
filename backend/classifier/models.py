@@ -57,10 +57,12 @@ class Tweet(BaseModel):
         db_table = 'Tweet'
 
     def __str__(self):
-        return f'<Tweet: id={self.tweet_id} at={self.tweet_date}>'
+        date = self.date.strftime('%d-%m-%Y %H:%M')
+        return f'<Tweet: id={self.tweet_id} at={date}>'
 
     def __repr__(self):
-        return f'<Tweet: id={self.tweet_id} at={self.tweet_date}>'
+        date = self.date.strftime('%d-%m-%Y %H:%M')
+        return f'<Tweet: id={self.tweet_id} at={date}>'
 
 
 class Prediction(BaseModel):
@@ -93,10 +95,12 @@ class Search(BaseModel):
         db_table = 'Search'
 
     def __str__(self):
-        return f'<Search: term={self.search_term} at={self.search_date}>'
+        date = self.date.strftime('%d-%m-%Y %H:%M')
+        return f'<Search: term={self.search_term} at={date}>'
 
     def __repr__(self):
-        return f'<Search: term={self.search_term} at={self.search_date}>'
+        date = self.date.strftime('%d-%m-%Y %H:%M')
+        return f'<Search: term={self.search_term} at={date}>'
 
 
 class Searcher(BaseModel):
