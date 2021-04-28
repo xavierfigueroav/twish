@@ -1,5 +1,16 @@
 version: "3.8"
 services:
+    db:
+        image: postgres
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./database:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+
     django:
         build:
             context: backend/
@@ -8,7 +19,12 @@ services:
             - "8000:8000"
         volumes:
             - ./backend:/app
-    
+            - static:/static
+        environment:
+            - POSTGRES_HOST=db
+        depends_on:
+            - db
+
     react:
         build:
             context: frontend/
@@ -17,3 +33,9 @@ services:
             - "3000:3000"
         volumes:
             - ./frontend:/app
+            - static:/app/src/admin
+        depends_on:
+            - django
+
+volumes:
+    static:
