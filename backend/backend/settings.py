@@ -133,3 +133,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = '/static/'
 
 MEDIA_URL = 'media/'
+
+APP_CONFIG_PATH = os.path.join(MEDIA_ROOT, 'settings.json')
