@@ -135,6 +135,16 @@ MEDIA_ROOT = '/static/'
 
 MEDIA_URL = 'media/'
 
+
+# DJANGO REST FRAMEWORK
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'classifier.permissions.AppConfiguredPermission',
+    ]
+}
+
+
 APP_CONFIG_PATH = os.path.join(MEDIA_ROOT, 'settings.json')
 
 CELERY_BROKER_URL = 'amqp://guest:guest@queue:5672'
