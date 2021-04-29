@@ -26,10 +26,10 @@ class Predictor(BaseModel):
         db_table = 'Predictor'
 
     def __str__(self):
-        return f'<Predictor: name={self.name} version={self.version}>'
+        return f'{self.name} ({self.version})'
 
     def __repr__(self):
-        return f'<Predictor: name={self.name} version={self.version}>'
+        return f'{self.name} ({self.version})'
 
 
 class PredictionLabel(BaseModel):
@@ -42,10 +42,10 @@ class PredictionLabel(BaseModel):
         db_table = 'PredictionLabel'
 
     def __str__(self):
-        return f'<PredictionLabel: label={self.label} ({self.integer_label})>' # noqa
+        return f'{self.label} ({self.integer_label})'
 
     def __repr__(self):
-        return f'<PredictionLabel: label={self.label} ({self.integer_label})>' # noqa
+        return f'{self.label} ({self.integer_label})'
 
 
 class Tweet(BaseModel):
@@ -57,12 +57,10 @@ class Tweet(BaseModel):
         db_table = 'Tweet'
 
     def __str__(self):
-        date = self.date.strftime('%d-%m-%Y %H:%M')
-        return f'<Tweet: id={self.tweet_id} at={date}>'
+        return self.id
 
     def __repr__(self):
-        date = self.date.strftime('%d-%m-%Y %H:%M')
-        return f'<Tweet: id={self.tweet_id} at={date}>'
+        return self.id
 
 
 class Prediction(BaseModel):
@@ -76,10 +74,10 @@ class Prediction(BaseModel):
         unique_together = ('predictor', 'tweet')
 
     def __str__(self):
-        return f'<Prediction: label={self.prediction}>'
+        return str(self.label)
 
     def __repr__(self):
-        return f'<Prediction: label={self.prediction}>'
+        return str(self.label)
 
 
 class Search(BaseModel):
@@ -95,12 +93,10 @@ class Search(BaseModel):
         db_table = 'Search'
 
     def __str__(self):
-        date = self.date.strftime('%d-%m-%Y %H:%M')
-        return f'<Search: term={self.search_term} at={date}>'
+        return self.search_term
 
     def __repr__(self):
-        date = self.date.strftime('%d-%m-%Y %H:%M')
-        return f'<Search: term={self.search_term} at={date}>'
+        return self.search_term
 
 
 class Searcher(BaseModel):
@@ -112,10 +108,10 @@ class Searcher(BaseModel):
         db_table = 'Searcher'
 
     def __str__(self):
-        return f'<Searcher: name={self.name} email={self.email}>'
+        return f'{self.name} ({self.email})'
 
     def __repr__(self):
-        return f'<Searcher: name={self.name} email={self.email}>'
+        return f'{self.name} ({self.email})'
 
 
 class App(models.Model):
@@ -160,7 +156,7 @@ class App(models.Model):
             json.dump(self.as_dict(), config_file, indent=4)
 
     def __str__(self):
-        return f'<App: name={self.name}>'
+        return self.name
 
     def __repr__(self):
-        return f'<App: name={self.name}>'
+        return self.name
