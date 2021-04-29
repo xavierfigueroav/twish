@@ -6,10 +6,8 @@ services:
             - "5432:5432"
         volumes:
             - ./database:/var/lib/postgresql/data
-        environment:
-            - POSTGRES_DB=postgres
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=postgres
+        env_file:
+            - ./dev.env
 
     queue:
         image: rabbitmq
@@ -25,16 +23,19 @@ services:
         volumes:
             - ./backend:/app
             - static:/static
-        environment:
-            - POSTGRES_HOST=db
+        env_file:
+            - ./dev.env
         depends_on:
             - db
 
     celery:
+        restart: always
         build: ./backend
         command: celery -A backend worker -l info
         volumes:
             - ./backend:/app
+        env_file:
+            - ./dev.env
         depends_on:
             - queue
             - django
