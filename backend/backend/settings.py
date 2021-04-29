@@ -147,6 +147,12 @@ REST_FRAMEWORK = {
 
 APP_CONFIG_PATH = os.path.join(MEDIA_ROOT, 'settings.json')
 
+# Celery
 CELERY_BROKER_URL = 'amqp://guest:guest@queue:5672'
-
 CELERY_IGNORE_RESULT = True
+
+# Tweepy
+TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', '')
+TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', '')
+TWITTER_ACCESS_TOKEN = os.environ.get('TWITTER_ACCESS_TOKEN', '')
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET', '')
