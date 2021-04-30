@@ -1,6 +1,7 @@
 import json
 
 from django.conf import settings
+from django.core.cache import cache
 from django.db import models
 from safedelete.models import SafeDeleteModel
 from safedelete.models import SOFT_DELETE_CASCADE
@@ -152,6 +153,8 @@ class App(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
+        # Cache and persist app information
+        cache.set('APP', self)
         with open(settings.APP_CONFIG_PATH, 'w') as config_file:
             json.dump(self.as_dict(), config_file, indent=4)
 
