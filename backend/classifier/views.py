@@ -1,20 +1,21 @@
 import uuid
 
+from django.core.cache import cache
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import App
 from .serializers import SearchSerializer
 from .tasks import collect_tweets
+from .utils import app_information
 
 
 @api_view(['POST'])
 def search(request):
-    APP = App.objects.all().get()
+    app = cache.get_or_set('APP', app_information)
     # TODO: Validate uniqueness of truncated_uuid
     request.data['truncated_uuid'] = uuid.uuid4().hex[:8]
     request.data['predictor'] = request.data.get(
-        'predictor', APP.default_predictor.id
+        'predictor', app.default_predictor.id
     )
     serializer = SearchSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
