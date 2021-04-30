@@ -30,8 +30,13 @@ def collect_tweets(search_id, search_term, number_of_tweets):
     tweets = []
     for tweet in cursor.items(number_of_tweets):
         tweets.append((tweet.id_str, tweet.created_at, tweet.full_text))
-
-    classify_tweets.delay(search_id, tweets)
+    if len(tweets) == 0:
+        search = Search.objects.get(pk=search_id)
+        search.empty = True
+        search.save()
+        notify_searchers.delay(search_id)
+    else:
+        classify_tweets.delay(search_id, tweets)
 
 
 @shared_task
@@ -43,6 +48,7 @@ def classify_tweets(search_id, tweets):
 
     classified = [(id, date, random.choice(labels)) for id, date, _ in tweets] # noqa
 
+    # TODO: Run these queries within a transaction
     for id, date, label in classified:
         tweet = Tweet.objects.create(id=id, date=date)  # noqa. What if it already exists?
         search.tweets.add(tweet)  # What if the relationship already exists?
