@@ -7,6 +7,7 @@ from rest_framework.response import Response
 
 from .models import Prediction
 from .models import Search
+from .serializers import SearcherSerializer
 from .serializers import SearchSerializer
 from .tasks import collect_tweets
 from .utils import app_information
@@ -73,3 +74,23 @@ have not been completed yet."
         data[prediction.label.label].append(tweet.id)
 
     return Response(data)
+
+
+@api_view(['POST'])
+def email(request):
+    serializer = SearcherSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    search_truncated_uuid = request.data.get('search')
+    try:
+        search_instance = Search.objects.get(
+            truncated_uuid=search_truncated_uuid
+        )
+    except Search.DoesNotExist:
+        message = {
+            'search_id': [
+                f'Invalid id {search_truncated_uuid} - search does not exist.'
+            ]
+        }
+        return Response(message, status=status.HTTP_404_NOT_FOUND)
+    serializer.save(search=search_instance)
+    return Response(serializer.data)
