@@ -5,17 +5,17 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
+from .models import App
 from .models import Prediction
 from .models import Search
 from .serializers import SearcherSerializer
 from .serializers import SearchSerializer
 from .tasks import collect_tweets
-from .utils import app_information
 
 
 @api_view(['POST'])
 def search(request):
-    app = cache.get_or_set('APP', app_information)
+    app = cache.get_or_set('APP', App.objects.get)
     # TODO: Validate uniqueness of truncated_uuid
     request.data['truncated_uuid'] = uuid.uuid4().hex[:8]
     request.data['predictor'] = request.data.get(
