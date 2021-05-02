@@ -1,13 +1,11 @@
-import random
-
 import tweepy
 from celery import shared_task
 from django.conf import settings
 
-from .models import PredictionLabel
 from .models import Search
 from .models import Searcher
 from .models import Tweet
+from .utils import get_predictor
 
 
 auth = tweepy.OAuthHandler(
@@ -44,12 +42,11 @@ def classify_tweets(search_id, tweets):
     """This is a dummy classifier task"""
 
     search = Search.objects.get(pk=search_id)
-    labels = PredictionLabel.objects.filter(predictor=search.predictor)
-
-    classified = [(id, date, random.choice(labels)) for id, date, _ in tweets] # noqa
+    predictor = get_predictor(predictor=search.predictor)
+    prediction = predictor.predict(tweets)
 
     # TODO: Run these queries within a transaction
-    for id, date, label in classified:
+    for id, date, label in prediction:
         tweet = Tweet.objects.create(id=id, date=date)  # noqa. What if it already exists?
         search.tweets.add(tweet)  # What if the relationship already exists?
         tweet.predictors.add(

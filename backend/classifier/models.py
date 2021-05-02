@@ -32,6 +32,24 @@ class Predictor(BaseModel):
     def __repr__(self):
         return f'{self.name} ({self.version})'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.delete_predictor_from_cache()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        self.delete_predictor_from_cache()
+
+    # FIXME: cache is not being updated when running cache.set here.
+    # cache from .models and cache from .utils seem to be different.
+    # This may be a sign of being running two django instances.
+    # Check backend and celery services in docker-compose.yml.
+    def delete_predictor_from_cache(self):
+        predictors = cache.get_or_set('PREDICTORS', {})
+        if self.id in predictors:
+            del predictors[self.id]
+            cache.set('PREDICTORS', predictors)
+
 
 class PredictionLabel(BaseModel):
     label = models.CharField(max_length=20)
