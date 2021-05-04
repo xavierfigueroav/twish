@@ -1,5 +1,7 @@
 import Header from '../components/Header';
 
+import SearchForm from '../components/SearchForm';
+
 
 const Search = () => {
     return (
@@ -20,27 +22,7 @@ const Search = () => {
                         Pedido de ayuda
                     </span>
                 </div>
-                <form className="space-y-3 mx-auto">
-                    <input className="block bg-gray-100 placeholder-gray-400
-                    border-2 border-transparent focus:outline-none focus:border-gray-300 rounded-md
-                    font-semibold text-center h-11 w-11/12 mx-auto py-2 px-3
-                    sm:inline-block sm:w-1/2 sm:mr-3"
-                    type="text" placeholder="Escribe tu búsqueda. Ej: oxígeno" autoFocus />
-                    <select defaultValue="1000" className="block bg-gray-100 placeholder-gray-400
-                    border-2 border-transparent focus:outline-none focus:border-gray-300 rounded-md
-                    font-semibold text-center h-11 mx-auto py-2 px-3 appearance-none sm:inline-block">
-                        <option className="bg-white" value="10">10 tweets</option>
-                        <option className="bg-white" value="50">50 tweets</option>
-                        <option className="bg-white" value="100">100 tweets</option>
-                        <option className="bg-white" value="1000">1000 tweets</option>
-                    </select>
-                    <button className="block bg-yellow-400 h-11 mx-auto py-2 px-3 rounded-md 
-                    focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50
-                    hover:bg-yellow-500 hover:opacity-100 font-semibold text-white"
-                    type="submit">
-                        Recolectar y clasificar
-                    </button>
-                </form>
+                <SearchForm></SearchForm>
             </main>
         </div>
     );
