@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useHistory } from "react-router-dom";
+
 import { API } from '../utils/Constants';
+import spinner from '../spinner.svg';
 
 
 const SearchForm = () => {
@@ -12,6 +14,8 @@ const SearchForm = () => {
     const [numberOfTweets, setNumberOfTweets] = useState(1000);
 
     const [seachError, setSearchError] = useState(false);
+
+    const [loading, setLoading] = useState(false);
 
     const history = useHistory();
 
@@ -35,16 +39,23 @@ const SearchForm = () => {
     const search = (event) => {
         event.preventDefault();
         if(validateSearchTerm(searchTerm)){
+            setSearchError(false);
+            setLoading(true);
             const data = {
                 search_term: searchTerm,
                 number_of_tweets: numberOfTweets
             };
             axios.post(API.search, data).then(response => {
                 const path = `search/${response.data.truncated_uuid}`;
-                history.push(path);
-            }).catch(error => {
-                setSearchError(true);
-                console.log(error);
+                setTimeout(() => {
+                    history.push(path);
+                    setLoading(false);
+                }, 1000);
+            }).catch(() => {
+                setTimeout(() => {
+                    setSearchError(true);
+                    setLoading(false);
+                }, 1000);
             });
         }
     }
@@ -79,9 +90,11 @@ const SearchForm = () => {
             type="submit">
                 Recolectar y clasificar
             </button>
+            { loading ? <img className="mx-auto h-10" src={spinner} /> : null }
             { seachError ? 
                 <p className="text-red-400 font-semibold">
-                    ¡Ocurrió un error al realizar la búsqueda!
+                    ¡Ocurrió un error al realizar la búsqueda!<br />
+                    Inténtalo de nuevo, más tarde.
                 </p> : null
             }
         </form>
