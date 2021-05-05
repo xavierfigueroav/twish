@@ -1,4 +1,7 @@
+import axios from 'axios';
 import { useState } from 'react';
+import { useHistory } from "react-router-dom";
+import { API } from '../utils/Constants';
 
 
 const SearchForm = () => {
@@ -9,6 +12,8 @@ const SearchForm = () => {
     const [numberOfTweets, setNumberOfTweets] = useState(1000);
 
     const [seachError, setSearchError] = useState(false);
+
+    const history = useHistory();
 
     const validateSearchTerm = (value) => {
         const validation = value != undefined && value.trim() !== '';
@@ -29,11 +34,18 @@ const SearchForm = () => {
 
     const search = (event) => {
         event.preventDefault();
-        if(searchTermValid){
-            // Call API
-            // The following lines are for the success scenario
-            setSearchError(false)
-            setSearchTerm('');
+        if(validateSearchTerm(searchTerm)){
+            const data = {
+                search_term: searchTerm,
+                number_of_tweets: numberOfTweets
+            };
+            axios.post(API.search, data).then(response => {
+                const path = `search/${response.data.truncated_uuid}`;
+                history.push(path);
+            }).catch(error => {
+                setSearchError(true);
+                console.log(error);
+            });
         }
     }
 
