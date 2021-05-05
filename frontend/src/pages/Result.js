@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Tweet } from 'react-twitter-widgets';
 
 import { Clipboard, copyToClipboard } from '../utils/Clipboard';
-import EmailAlertForm from '../components/EmailAlertForm';
+import EmailForm from '../components/EmailForm';
 import Header from '../components/Header';
 import { HelpType } from '../utils/Constants';
 
@@ -46,7 +46,7 @@ const Result = () => {
                         las <Link to="/" className="text-blue-900 font-bold hover:underline">búsquedas</Link> que 
                         otras personas han hecho en el pasado.
                     </p>
-                    <EmailAlertForm />
+                    <EmailForm />
                     <Clipboard copy={document.location.href} />
                 </main> :
                 <main className="mt-16 mx-auto text-center lg:w-3/4">
