@@ -9,7 +9,7 @@ const App = () => {
     return (
         <BrowserRouter>
           <Switch>
-            <Route path="/search/:id" component={Result} />
+            <Route path="/search/:searchId" component={Result} />
             <Route path="/" component={Search} />
           </Switch>
         </BrowserRouter>

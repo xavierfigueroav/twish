@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import axios from 'axios';
+
+import { API } from '../utils/Constants';
+import spinner from '../spinner.svg';
 
 
 const EmailForm = () => {
@@ -10,6 +16,10 @@ const EmailForm = () => {
 
     const [emailSaved, setEmailSaved] = useState(false);
     const [emailError, setEmailError] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+
+    const { searchId } = useParams();
 
     const validateName = (value) => {
         const validation = value != undefined && value.trim() !== '';
@@ -43,13 +53,28 @@ const EmailForm = () => {
 
     const saveEmail = (event) => {
         event.preventDefault();
+        setEmailSaved(false);
+        setEmailError(false);
         const nameValidation = validateName(name);
         const emailValidation = validateEmail(email);
         if(nameValidation && emailValidation) {
-            // The following lines are for the success scenario
-            setEmailSaved(true);
-            setEmailError(false);
-            clearForm();
+            setLoading(true);
+            const data = { name, email, search: searchId };
+            axios.post(API.email, data).then(() => {
+                setTimeout(() => {
+                    setEmailSaved(true);
+                    setEmailError(false);
+                    clearForm();
+                    setLoading(false);
+                }, 1000);
+            }).catch(error => {
+                setTimeout(() => {
+                    console.log(error);
+                    setEmailSaved(false);
+                    setEmailError(true);
+                    setLoading(false);
+                }, 1000);
+            });
         }
     };
 
@@ -83,10 +108,11 @@ const EmailForm = () => {
             type="submit">
                 Enviar
             </button>
+            { loading ? <img className="mx-auto h-10" src={spinner} /> : null }
             { emailSaved ? 
                 <p className="text-green-400 font-semibold">
                     ¡Guardamos tu correo!<br />Te avisaremos cuando la 
-                    recolección y clasificación estén listas.
+                    recolección y la clasificación estén listas.
                 </p> : 
             emailError ? 
                 <p className="text-red-400 font-semibold">
