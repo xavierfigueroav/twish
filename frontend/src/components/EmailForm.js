@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 
-const EmailAlertForm = () => {
+const EmailForm = () => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -99,4 +99,4 @@ const EmailAlertForm = () => {
 
 };
 
-export default EmailAlertForm;
+export default EmailForm;
