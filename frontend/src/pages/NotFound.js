@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Header from "../components/Header";
 
 const NotFound = () => {
@@ -8,9 +9,10 @@ const NotFound = () => {
                 <p className="text-2xl font-semibold">¡La página que estabas buscando no existe!</p>
                 <p className="text-2xl font-semibold">:(</p>
                 <br />
-                <a className="text-2xl font-semibold text-blue-900 hover:underline" href="/">
+                {/* TODO: change a element by Link */ }
+                <Link className="text-2xl font-semibold text-blue-900 hover:underline" to="/">
                     Regresa al inicio
-                </a>
+                </Link>
             </main>
         </div>
     );
