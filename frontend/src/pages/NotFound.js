@@ -9,7 +9,6 @@ const NotFound = () => {
                 <p className="text-2xl font-semibold">¡La página que estabas buscando no existe!</p>
                 <p className="text-2xl font-semibold">:(</p>
                 <br />
-                {/* TODO: change a element by Link */ }
                 <Link className="text-2xl font-semibold text-blue-900 hover:underline" to="/">
                     Regresa al inicio
                 </Link>
