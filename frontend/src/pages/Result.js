@@ -1,23 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { Tweet } from 'react-twitter-widgets';
+import axios from 'axios';
 
 import { Clipboard, copyToClipboard } from '../utils/Clipboard';
 import EmailForm from '../components/EmailForm';
 import Header from '../components/Header';
-import { HelpType } from '../utils/Constants';
+import { API, HelpType } from '../utils/Constants';
+
+import spinner from '../spinner.svg';
 
 
 const Result = () => {
 
     const [tweets, setTweets] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
     const [activeTab, setActiveTab] = useState(HelpType.helpOffered);
+    const [isEmptySearch, setIsEmptySearch] = useState(false);
     const [linkCopied, setLinkCopied] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    const { searchId } = useParams();
+    const history = useHistory();
 
     useEffect(() => {
-        // Call API to get tweets
-        setTweets({});
+        axios.post(API.result, {search_id: searchId}).then(response => {
+            setTimeout(() => {
+                setSearchTerm(response.data.search_term);
+                if(response.data.processing === undefined) {
+                    setTweets(response.data);
+                } else if (!response.data.processing) { // Empty search
+                    setIsEmptySearch(true);
+                }
+                setLoading(false);
+            }, 500);
+        }).catch(() => {
+            setTimeout(() => {
+                history.push('/404');
+                setLoading(false);
+            }, 500);
+        });
     }, []);
 
     const copyLink = () => {
@@ -31,7 +54,19 @@ const Result = () => {
     return (
         <div className="m-5">
             <Header />
-            { Object.keys(tweets).length === 0 ?
+            { loading ? <img className="mx-auto mt-16 h-10" src={spinner} /> :
+            isEmptySearch ?
+                <main className="mt-16 mx-auto text-center md:w-3/4 lg:w-1/2">
+                    <p className="text-2xl font-semibold">
+                        ¡Desafortunadamente, la búsqueda <i>{ searchTerm }</i> no devolvió resultados!
+                    </p>
+                    <p className="text-2xl font-semibold">:(</p>
+                    <br />
+                    <a className="text-2xl font-semibold text-blue-900 hover:underline" href="/">
+                        Regresa al inicio
+                    </a>
+                </main> :
+            Object.keys(tweets).length === 0 ?
                 <main className="mt-16 mx-auto text-center md:w-3/4 lg:w-1/2">
                     <p>Estamos recolectando y clasificando los tweets, esto puede tardar varios minutos.</p>
                     { linkCopied ? <p className="text-green-400 font-semibold">¡Enlace copiado!</p> :
