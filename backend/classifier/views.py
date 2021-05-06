@@ -32,38 +32,36 @@ def search(request):
     return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
 
-@api_view(['GET'])
+@api_view(['POST'])
 def result(request):
     search_id = request.data.get('search_id')
     try:
         search_instance = Search.objects.get(truncated_uuid=search_id)
     except Search.DoesNotExist:
-        message = {
-            'search_id': [f'Invalid id {search_id} - search does not exist.']
+        data = {
+            'detail': f'Invalid id {search_id} - search does not exist.',
         }
-        return Response(message, status=status.HTTP_404_NOT_FOUND)
+        return Response(data, status=status.HTTP_404_NOT_FOUND)
 
     if search_instance.empty:
         # TODO: Hide search after this condition is True for the first time
         search_term = search_instance.search_term
-        message = {
-            'tweets': [
-                f"Unfortunately, we did not found tweets for '{search_term}'."
-            ]
+        data = {
+            'detail': f"Unfortunately, we did not found tweets for '{search_term}'.", # noqa
+            'processing': False
         }
-        return Response(message, status=status.HTTP_204_NO_CONTENT)
+        return Response(data)
 
     tweets = search_instance.tweets.all()
 
     if len(tweets) == 0:
         search_term = search_instance.search_term
-        message = {
-            'tweets': [
-                f"Tweets collection and classification for '{search_term}' \
-have not been completed yet."
-            ]
+        data = {
+            'detail': f"Tweets collection and classification for '{search_term}' \
+have not been completed yet.",
+            'processing': True
         }
-        return Response(message, status=status.HTTP_204_NO_CONTENT)
+        return Response(data)
 
     data = dict()
     for tweet in tweets:
