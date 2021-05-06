@@ -6,4 +6,5 @@ export const HelpType = {
 export const API = {
     search: 'api/search',
     email: 'api/email',
+    result: 'api/result',
 };
