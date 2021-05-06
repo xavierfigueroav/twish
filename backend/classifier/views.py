@@ -43,11 +43,13 @@ def result(request):
         }
         return Response(data, status=status.HTTP_404_NOT_FOUND)
 
+    search_term = search_instance.search_term
+
     if search_instance.empty:
         # TODO: Hide search after this condition is True for the first time
-        search_term = search_instance.search_term
         data = {
             'detail': f"Unfortunately, we did not found tweets for '{search_term}'.", # noqa
+            'search_term': search_term,
             'processing': False
         }
         return Response(data)
@@ -55,10 +57,10 @@ def result(request):
     tweets = search_instance.tweets.all()
 
     if len(tweets) == 0:
-        search_term = search_instance.search_term
         data = {
             'detail': f"Tweets collection and classification for '{search_term}' \
 have not been completed yet.",
+            'search_term': search_term,
             'processing': True
         }
         return Response(data)
@@ -70,6 +72,8 @@ have not been completed yet.",
         )
         data[prediction.label.label] = data.get(prediction.label.label, [])
         data[prediction.label.label].append(tweet.id)
+
+    data['search_term'] = search_term
 
     return Response(data)
 
