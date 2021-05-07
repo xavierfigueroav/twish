@@ -9,6 +9,7 @@ click-didyoumean==0.0.3
 click-plugins==1.1.1
 click-repl==0.1.6
 Django==3.2
+django-cors-headers==3.7.0
 django-safedelete==1.0.0
 djangorestframework==3.12.4
 flake8==3.9.1
