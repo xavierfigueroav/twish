@@ -80,7 +80,7 @@ class Preprocessor:
 
         if data.shape[0] != 0:
             features = self.processor_model.transform(data.tweet.values).todense() # noqa
-            return data.id, data.date, features
+            return data.id.values, data.date.values, features
 
 
 class Predictor(BasePredictor):
@@ -127,6 +127,6 @@ class Predictor(BasePredictor):
             ids, dates, features = preprocessed_data
             prediction = self.prediction_model.predict(features)
 
-            for i in range(len(ids)):
+            for i in range(ids.shape[0]):
                 result.append((ids[i], dates[i], self.labels[prediction[i]]))
         return result
