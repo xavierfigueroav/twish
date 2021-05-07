@@ -8,7 +8,9 @@ class SearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Search
-        fields = ['truncated_uuid', 'search_term', 'number_of_tweets', 'predictor'] # noqa
+        fields = [
+            'truncated_uuid', 'search_term', 'number_of_tweets', 'predictor', 'date' # noqa
+        ]
 
 
 class SearcherSerializer(serializers.ModelSerializer):
