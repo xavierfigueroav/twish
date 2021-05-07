@@ -96,3 +96,11 @@ def email(request):
         return Response(message, status=status.HTTP_404_NOT_FOUND)
     serializer.save(search=search_instance)
     return Response(serializer.data)
+
+
+# TODO: Add support for pagination
+@api_view(['GET'])
+def search_history(request):
+    search_set = Search.objects.exclude(tweets=None).order_by('-date')
+    serializer = SearchSerializer(search_set, many=True)
+    return Response(serializer.data)
