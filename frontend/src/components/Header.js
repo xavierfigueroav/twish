@@ -14,7 +14,7 @@ const Header = () => {
             <nav className="lg:col-start-3 lg:self-center">
                 <ul className="space-x-8 text-center">
                     <li className="inline">
-                        <Link to="/" className="text-blue-900 font-bold hover:underline">
+                        <Link to="/history" className="text-blue-900 font-bold hover:underline">
                             Últimas búsquedas
                         </Link>
                     </li>
