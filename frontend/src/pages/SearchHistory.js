@@ -13,8 +13,8 @@ const SearchHistory = () => {
     const [searches, setSearches] = useState([]);
 
     useEffect(() => {
-        axios.get(API.searchHistory).then(() => {
-            setSearches([]);
+        axios.get(API.searchHistory).then(response => {
+            setSearches(response.data);
         }).catch(console.log);
     }, []);
 
