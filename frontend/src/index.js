@@ -10,7 +10,8 @@ import reportWebVitals from './reportWebVitals';
 import FirstSetUp from './pages/FirstSetUp';
 
 
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_HOST;
+
 
 if(settings.name === undefined) {
     ReactDOM.render(
@@ -27,6 +28,7 @@ if(settings.name === undefined) {
         document.getElementById('root')
     );
 }
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

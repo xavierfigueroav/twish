@@ -49,6 +49,8 @@ services:
         volumes:
             - ./frontend:/app
             - static:/app/src/admin
+        env_file:
+            - ./dev.env
         depends_on:
             - django
 
