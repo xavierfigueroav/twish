@@ -5,17 +5,28 @@ import axios from 'axios';
 
 import './index.css';
 import App from './App';
+import settings from './admin/settings.json';
 import reportWebVitals from './reportWebVitals';
+import FirstSetUp from './pages/FirstSetUp';
 
 
 axios.defaults.baseURL = 'http://localhost:8000';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+if(settings.name === undefined) {
+    ReactDOM.render(
+        <React.StrictMode>
+          <FirstSetUp />
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+} else {
+    ReactDOM.render(
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>,
+        document.getElementById('root')
+    );
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
