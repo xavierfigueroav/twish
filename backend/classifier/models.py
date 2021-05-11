@@ -1,6 +1,3 @@
-import json
-
-from django.conf import settings
 from django.core.cache import cache
 from django.db import models
 from safedelete.models import SafeDeleteModel
@@ -8,6 +5,7 @@ from safedelete.models import SOFT_DELETE_CASCADE
 
 from .storage import OverwriteableStorage
 from .utils import logo_filename
+from .utils import update_app_settings
 
 
 class BaseModel(SafeDeleteModel):
@@ -26,6 +24,22 @@ class Predictor(BaseModel):
     class Meta:
         db_table = 'Predictor'
 
+    def as_dict(self):
+        labels = []
+        for label in PredictionLabel.objects.filter(predictor=self):
+            labels.append({
+                'label': label.label,
+                'integer_label': label.integer_label,
+                'description': label.description
+            })
+
+        return {
+            'name': self.name,
+            'version': self.version,
+            'description': self.version,
+            'labels': labels
+        }
+
     def __str__(self):
         return f'{self.name} ({self.version})'
 
@@ -34,10 +48,12 @@ class Predictor(BaseModel):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        update_app_settings()
         self.delete_predictor_from_cache()
 
     def delete(self, *args, **kwargs):
         super().delete(*args, **kwargs)
+        update_app_settings()
         self.delete_predictor_from_cache()
 
     # FIXME: cache is not being updated when running cache.set here.
@@ -59,6 +75,14 @@ class PredictionLabel(BaseModel):
 
     class Meta:
         db_table = 'PredictionLabel'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        update_app_settings()
+
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        update_app_settings()
 
     def __str__(self):
         return f'{self.label} ({self.integer_label})'
@@ -163,18 +187,17 @@ class App(models.Model):
             'logo': self.logo.url,
             'about': self.about,
             'enable_email_notification': self.enable_email_notification,
-            'allow_user_to_choose_predictor': self.allow_user_to_choose_predictor, # noqa
             'allow_user_to_choose_number_of_tweets': self.allow_user_to_choose_number_of_tweets, # noqa
-            'default_predictor': self.default_predictor.name,
+            'predictor': self.default_predictor.as_dict(),
         }
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        update_app_settings()
 
-        # Cache and persist app information
-        cache.set('APP', self)
-        with open(settings.APP_CONFIG_PATH, 'w') as config_file:
-            json.dump(self.as_dict(), config_file, indent=4)
+    def delete(self, *args, **kwargs):
+        super().delete(*args, **kwargs)
+        update_app_settings()
 
     def __str__(self):
         return self.name
