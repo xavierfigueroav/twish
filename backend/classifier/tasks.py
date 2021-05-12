@@ -1,32 +1,19 @@
-import tweepy
 from celery import shared_task
-from django.conf import settings
 
+from .collectors import OfficialAPICollector
 from .models import Search
 from .models import Searcher
 from .models import Tweet
 from .utils import get_predictor
 
 
-auth = tweepy.OAuthHandler(
-    settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET
-)
-auth.set_access_token(
-    settings.TWITTER_ACCESS_TOKEN, settings.TWITTER_ACCESS_TOKEN_SECRET
-)
-TWITTER_API = tweepy.API(auth, wait_on_rate_limit=True)
+api_collector = OfficialAPICollector()
 
 
 @shared_task
 def collect_tweets(search_id, search_term, number_of_tweets):
-    query = f'{search_term} -filter:retweets'
-    cursor = tweepy.Cursor(
-        TWITTER_API.search, q=query, tweet_mode='extended',
-        result_type='recent', include_entities=False
-    )
-
     tweets = []
-    for tweet in cursor.items(number_of_tweets):
+    for tweet in api_collector.collect(search_term, number_of_tweets):
         tweets.append((tweet.id_str, tweet.created_at, tweet.full_text))
     if len(tweets) == 0:
         search = Search.objects.get(pk=search_id)
@@ -39,8 +26,6 @@ def collect_tweets(search_id, search_term, number_of_tweets):
 
 @shared_task
 def classify_tweets(search_id, tweets):
-    """This is a dummy classifier task"""
-
     search = Search.objects.get(pk=search_id)
     predictor = get_predictor(predictor=search.predictor)
     prediction = predictor.predict(tweets)
