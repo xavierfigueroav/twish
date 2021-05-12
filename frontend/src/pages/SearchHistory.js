@@ -32,12 +32,12 @@ const SearchHistory = () => {
                     </div> :
                     <div>
                         <p className="text-2xl font-semibold">
-                            ¡Aún no existen búsquedas con resultados obtenidos!
+                            There are not any searches with results yet!
                         </p>
                         <p className="text-2xl font-semibold">:(</p>
                         <br />
                         <Link className="text-2xl font-semibold text-blue-900 hover:underline" to="/">
-                            Realiza una búsqueda tú
+                            Do your own search
                         </Link>
                     </div>
                 }
