@@ -8,7 +8,7 @@ const Header = () => {
         <header className="space-y-5 lg:grid lg:grid-cols-3 lg:space-y-0">
             <div className="lg:col-start-2">
                 <Link to="/">
-                    <img src={logo} className="h-24 m-auto" alt="logo" />
+                    <img src={logo} className="h-20 m-auto" alt="logo" />
                 </Link>
             </div>
             <nav className="lg:col-start-3 lg:self-center">
