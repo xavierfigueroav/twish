@@ -7,14 +7,20 @@ import Header from '../components/Header';
 import SearchCard from '../components/SearchCard';
 import { Link } from 'react-router-dom';
 
+import spinner from '../spinner.svg';
+
 
 const SearchHistory = () => {
 
     const [searches, setSearches] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         axios.get(API.searchHistory).then(response => {
-            setSearches(response.data);
+            setTimeout(() => {
+                setSearches(response.data);
+                setLoading(false);
+            }, 500);
         }).catch(console.log);
     }, []);
 
@@ -22,7 +28,8 @@ const SearchHistory = () => {
         <div className="m-5">
             <Header></Header>
             <main className="mt-16 mx-auto text-center sm:w-3/4">
-                { searches.length > 0 ?
+                { loading ? <img className="mx-auto mt-16 h-10" src={spinner} /> :
+                searches.length > 0 ?
                     <div className="mt-16 mx-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {searches.map(
                             search => <SearchCard key={search.truncated_uuid} searchTerm={search.search_term} 
