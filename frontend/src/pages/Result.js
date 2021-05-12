@@ -58,28 +58,28 @@ const Result = () => {
             isEmptySearch ?
                 <main className="mt-16 mx-auto text-center md:w-3/4 lg:w-1/2">
                     <p className="text-2xl font-semibold">
-                        ¡Desafortunadamente, la búsqueda <i>{ searchTerm }</i> no devolvió resultados!
+                        Unfortunately, the search <i>{ searchTerm }</i> has no results!
                     </p>
                     <p className="text-2xl font-semibold">:(</p>
                     <br />
                     <a className="text-2xl font-semibold text-blue-900 hover:underline" href="/">
-                        Regresa al inicio
+                        Go back to home
                     </a>
                 </main> :
             Object.keys(tweets).length === 0 ?
                 <main className="mt-16 mx-auto text-center md:w-3/4 lg:w-1/2">
-                    <p>Estamos recolectando y clasificando los tweets, esto puede tardar varios minutos.</p>
-                    { linkCopied ? <p className="text-green-400 font-semibold">¡Enlace copiado!</p> :
+                    <p>We are collecting and classifying tweets, this may take several minutes.</p>
+                    { linkCopied ? <p className="text-green-400 font-semibold">Link copied!</p> :
                         <p>
                             <button type="button" className="text-blue-900 font-bold hover:underline" 
-                            onClick={copyLink}>Copia el enlace</button> y regresa luego.
+                            onClick={copyLink}>Copy the link</button> and come back later.
                         </p>
                     }
-                    <p>También puedes dejarnos tu nombre y tu correo, y te avisaremos cuando todo esté listo.</p>
+                    <p>Yo can also drop your name and your email, and we will notify you when everything is ready.</p>
                     <p>
-                        Mientras tanto, puedes revisar 
-                        las <Link to="/" className="text-blue-900 font-bold hover:underline">búsquedas</Link> que 
-                        otras personas han hecho en el pasado.
+                        Meanwhile, you can check 
+                        the <Link to="/" className="text-blue-900 font-bold hover:underline">searches</Link> other 
+                        people have done previously.
                     </p>
                     <EmailForm />
                     <Clipboard copy={document.location.href} />
@@ -89,13 +89,13 @@ const Result = () => {
                         <li className={activeTab === HelpType.helpOffered ? activeTabCSSClasses : inactiveTabCSSClasses}>
                             <button className="focus:outline-none font-semibold"
                             onClick={() => setActiveTab(HelpType.helpOffered)}>
-                                Oferta de ayuda
+                                Help offer
                             </button>
                         </li>
                         <li className={activeTab === HelpType.helpWanted ? activeTabCSSClasses : inactiveTabCSSClasses}>
                             <button className="focus:outline-none font-semibold"
                             onClick={() => setActiveTab(HelpType.helpWanted)}>
-                                Pedido de ayuda
+                                Help wanted
                             </button>
                         </li>
                     </ul>
