@@ -7,16 +7,17 @@ import axios from 'axios';
 import { Clipboard, copyToClipboard } from '../utils/Clipboard';
 import EmailForm from '../components/EmailForm';
 import Header from '../components/Header';
-import { API, HelpType } from '../utils/Constants';
+import { API } from '../utils/Constants';
 
 import spinner from '../spinner.svg';
+import settings from '../admin/settings.json';
 
 
 const Result = () => {
 
     const [tweets, setTweets] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
-    const [activeTab, setActiveTab] = useState(HelpType.helpOffered);
+    const [activeTab, setActiveTab] = useState(settings.predictor.labels[0].label);
     const [isEmptySearch, setIsEmptySearch] = useState(false);
     const [linkCopied, setLinkCopied] = useState(false);
     const [loading, setLoading] = useState(true);
@@ -86,21 +87,24 @@ const Result = () => {
                 </main> :
                 <main className="mt-16 mx-auto text-center lg:w-3/4">
                     <ul className="space-x-4">
-                        <li className={activeTab === HelpType.helpOffered ? activeTabCSSClasses : inactiveTabCSSClasses}>
-                            <button className="focus:outline-none font-semibold"
-                            onClick={() => setActiveTab(HelpType.helpOffered)}>
-                                Help offer
-                            </button>
-                        </li>
-                        <li className={activeTab === HelpType.helpWanted ? activeTabCSSClasses : inactiveTabCSSClasses}>
-                            <button className="focus:outline-none font-semibold"
-                            onClick={() => setActiveTab(HelpType.helpWanted)}>
-                                Help wanted
-                            </button>
-                        </li>
+                        { settings.predictor.labels.map(label => {
+                            return (
+                                <li className={activeTab === label.label ? activeTabCSSClasses : inactiveTabCSSClasses} key={label.label}>
+                                    <button className="focus:outline-none font-semibold"
+                                    onClick={() => setActiveTab(label.label)}>
+                                        {label.label}
+                                    </button>
+                                </li>
+                            );
+                        }) }
                     </ul>
                     <div className="mt-16 mx-auto text-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        { tweets[activeTab].map(id => <Tweet key={id} tweetId={id} />) }
+                        { tweets[activeTab] !== undefined ? 
+                            tweets[activeTab].map(id => <Tweet key={id} tweetId={id} />) :
+                            <p className="italic text-gray-600 col-span-3">
+                                No tweets were classified into this category.
+                            </p>
+                        }
                     </div>
                 </main>
             }

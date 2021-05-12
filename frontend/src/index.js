@@ -13,7 +13,7 @@ import FirstSetUp from './pages/FirstSetUp';
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_HOST;
 
 
-if(settings.name === undefined) {
+if(settings.name === undefined || settings.predictor.labels.length < 2) {
     ReactDOM.render(
         <React.StrictMode>
           <FirstSetUp />
