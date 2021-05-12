@@ -15,12 +15,12 @@ const Header = () => {
                 <ul className="space-x-8 text-center">
                     <li className="inline">
                         <Link to="/history" className="text-blue-900 font-bold hover:underline">
-                            Últimas búsquedas
+                            Latest searches
                         </Link>
                     </li>
                     <li className="inline">
                         <Link to="/" className="text-blue-900 font-bold hover:underline">
-                            Acerca de
+                            About
                         </Link>
                     </li>
                 </ul>
