@@ -91,33 +91,33 @@ const EmailForm = () => {
     return (
         <form className="space-y-3 mx-auto my-10" onSubmit={saveEmail}>
             <input className={nameValid ? validInputCSSClasses : invalidInputCSSClasses}
-            type="text" name="name" placeholder="Tu nombre" value={name} 
+            type="text" name="name" placeholder="Your name" value={name} 
             onChange={handleInputChange} />
             { !nameValid ? <p className="text-red-400 font-semibold">
-                Este campo no puede quedar vacío
+                This field cannot be left blank
             </p>: null }
             <input className={emailValid ? validInputCSSClasses : invalidInputCSSClasses}
-            type="email" name="email" placeholder="Tu correo electrónico" value={email} 
+            type="email" name="email" placeholder="Your email address" value={email} 
             onChange={handleInputChange} />
             { !emailValid ? <p className="text-red-400 font-semibold">
-                Asegúrate ingresar un correo válido
+                Make sure you enter a valid email
             </p>: null }
             <button className="block bg-yellow-400 h-11 mx-auto py-2 px-3 rounded-md 
             focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50
             hover:bg-yellow-500 hover:opacity-100 font-semibold text-white"
             type="submit">
-                Enviar
+                Send
             </button>
             { loading ? <img className="mx-auto h-10" src={spinner} /> : null }
             { emailSaved ? 
                 <p className="text-green-400 font-semibold">
-                    ¡Guardamos tu correo!<br />Te avisaremos cuando la 
-                    recolección y la clasificación estén listas.
+                    We have saved your email!<br />We will notify you when the tweets 
+                    collection and classification are ready.
                 </p> : 
             emailError ? 
                 <p className="text-red-400 font-semibold">
-                    ¡Ocurrió un error al almacenar tu correo!<br />
-                    Inténtalo de nuevo, más tarde.
+                    Something went wrong when storing your email!<br />
+                    Try again, later.
                 </p> : null
             }
         </form>
