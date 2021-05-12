@@ -73,7 +73,7 @@ const SearchForm = () => {
     return (
         <form className="space-y-3 mx-auto" onSubmit={search}>
             <input className={searchTermValid ? validInputCSSClasses : invalidInputCSSClasses}
-            type="text" placeholder="Escribe tu búsqueda. Ej: oxígeno" autoFocus 
+            type="text" placeholder="Enter your search. Ex: oxigen" autoFocus 
             value={searchTerm} onChange={handleInputChange}/>
             <select className="block bg-gray-100 placeholder-gray-400
             border-2 border-transparent focus:outline-none focus:border-gray-300 rounded-md
@@ -88,13 +88,13 @@ const SearchForm = () => {
             focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50
             hover:bg-yellow-500 hover:opacity-100 font-semibold text-white"
             type="submit">
-                Recolectar y clasificar
+                Collect and classify
             </button>
             { loading ? <img className="mx-auto h-10" src={spinner} /> : null }
             { seachError ? 
                 <p className="text-red-400 font-semibold">
-                    ¡Ocurrió un error al realizar la búsqueda!<br />
-                    Inténtalo de nuevo, más tarde.
+                    Something went wrong when running your search!<br />
+                    Try again, later.
                 </p> : null
             }
         </form>
