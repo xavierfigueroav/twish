@@ -10,17 +10,6 @@ import pandas as pd
 from .models import PredictionLabel
 
 
-class BasePredictor:
-
-    def __init__(self, predictor):
-        self.predictor = predictor
-        labels = PredictionLabel.objects.filter(predictor=self.predictor)
-        self.labels = {label.integer_label: label for label in labels}
-
-    def predict(self, tweets):
-        raise NotImplementedError()
-
-
 class Preprocessor:
 
     regex_1 = re.compile(r'\S+(\.)(com|net|ly|co|us|ec|gob)(\S?)+')
@@ -83,7 +72,7 @@ class Preprocessor:
             return data.id.values, data.date.values, features
 
 
-class Predictor(BasePredictor):
+class Predictor:
     """
     This is the class you should customize to perform prediction and,
     more importantly, any io/memory-intensive task, such us loading
@@ -99,7 +88,9 @@ class Predictor(BasePredictor):
     """
 
     def __init__(self, predictor):
-        super().__init__(predictor)
+        self.predictor = predictor
+        labels = PredictionLabel.objects.filter(predictor=self.predictor)
+        self.labels = {label.integer_label: label for label in labels}
         self.preprocessor = Preprocessor()
         self.load_model()
 
