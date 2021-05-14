@@ -10,18 +10,18 @@ def logo_filename(instance, filename):
 
 def get_predictor(predictor):
     """
-    This method returns a .predictors.Predictor instance based on
+    This method returns a predictors from predictors.py based on
     a .models.Predictor instance.
 
-    If there exists a .predictors.Predictor instance in cache for
-    the .models.Predictor received, it returns the cached instance,
-    otherwise, it creates a new instance.
+    If there exists a predictor instance in cache for the .models.Predictor
+    received, it returns the cached instance, otherwise, it creates a new
+    instance and cache it.
     """
-    from .predictors import Predictor
+    from .predictors import LogisticRegression
 
     predictors = cache.get_or_set('PREDICTORS', {})
     if predictor.id not in predictors:
-        predictors[predictor.id] = Predictor(predictor)
+        predictors[predictor.id] = LogisticRegression(predictor)
         cache.set('PREDICTORS', predictors)
     return predictors[predictor.id]
 
