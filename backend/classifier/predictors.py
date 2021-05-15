@@ -2,7 +2,6 @@ import os
 
 import joblib
 
-from .models import PredictionLabel
 from .preprocessors import LogisticRegressionPreprocessor
 
 
@@ -22,6 +21,7 @@ class LogisticRegression:
     """
 
     def __init__(self, predictor):
+        from .models import PredictionLabel
         self.predictor = predictor
         labels = PredictionLabel.objects.filter(predictor=self.predictor)
         self.labels = {label.integer_label: label for label in labels}
