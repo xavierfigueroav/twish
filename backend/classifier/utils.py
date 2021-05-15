@@ -2,6 +2,10 @@ import json
 
 from django.conf import settings
 from django.core.cache import cache
+from django.utils.module_loading import import_string
+
+
+PREDICTORS_DIR = 'classifier.predictors'
 
 
 def logo_filename(instance, filename):
@@ -17,11 +21,11 @@ def get_predictor(predictor):
     received, it returns the cached instance, otherwise, it creates a new
     instance and cache it.
     """
-    from .predictors import LogisticRegression
 
     predictors = cache.get_or_set('PREDICTORS', {})
     if predictor.id not in predictors:
-        predictors[predictor.id] = LogisticRegression(predictor)
+        GenericPredictor = import_string(f'{PREDICTORS_DIR}.{predictor.name}')
+        predictors[predictor.id] = GenericPredictor(predictor)
         cache.set('PREDICTORS', predictors)
     return predictors[predictor.id]
 
