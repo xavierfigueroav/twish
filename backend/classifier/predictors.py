@@ -1,3 +1,4 @@
+import abc
 import os
 
 import joblib
@@ -5,7 +6,14 @@ import joblib
 from .preprocessors import LogisticRegressionPreprocessor
 
 
-class LogisticRegression:
+class AbstractPredictor(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def predict(self, tweets):
+        pass
+
+
+class LogisticRegression(AbstractPredictor):
     """
     This is the class you should customize to perform prediction and,
     more importantly, any io/memory-intensive task, such us loading
