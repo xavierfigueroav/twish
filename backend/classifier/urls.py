@@ -1,3 +1,7 @@
+"""
+This module exposes the urlpatterns variable which defines the routes (and its
+respective views) the application accepts.
+"""
 from django.urls import path
 
 from .views import email
