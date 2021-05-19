@@ -184,11 +184,11 @@ class App(models.Model):
         return {
             'name': self.name,
             'description': self.description,
-            'logo': self.logo.url,
+            'logo': self.logo.url if self.logo else None,
             'about': self.about,
             'enable_email_notification': self.enable_email_notification,
             'allow_user_to_choose_number_of_tweets': self.allow_user_to_choose_number_of_tweets, # noqa
-            'predictor': self.default_predictor.as_dict(),
+            'predictor': self.default_predictor.as_dict() if self.default_predictor else None, # noqa
         }
 
     def save(self, *args, **kwargs):
