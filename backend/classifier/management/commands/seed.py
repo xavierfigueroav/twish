@@ -1,3 +1,7 @@
+"""
+This module contains a Django custom command to seed the database with initial
+example information for the application to work out-of-the-box.
+"""
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 
@@ -7,8 +11,28 @@ from ...models import Predictor
 
 
 class Command(BaseCommand):
+    """
+    Django custom command to seed the database with initial example
+    information.
+
+    Method list:
+        * handle - It overrides the BaseCommand's handle method to run the
+        actual command logic.
+        * seed_user - It seeds the User table to create a superadmin user.
+        * seed_predictor - It seeds the Predictor and PredictionLabel tables.
+        * seed_app - It seeds the App table.
+
+    Notes
+    -----
+    Read https://docs.djangoproject.com/en/3.2/howto/custom-management-commands
+    for further information on how Django custom commands work.
+    """
 
     def seed_user(self):
+        """
+        This method seeds the User table to create a superadmin user.
+        """
+
         if User.objects.filter(username='admin', is_superuser=True).exists():
             self.stdout.write(self.style.SUCCESS('User table already seeded!'))
         else:
@@ -18,6 +42,11 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('User table seeded!'))
 
     def seed_predictor(self):
+        """
+        This method seeds the Predictor and PredictionLabel tables for the
+        example predictive models to work.
+        """
+
         if Predictor.objects.exists():
             self.stdout.write(
                 self.style.SUCCESS('Predictor table already seeded!')
@@ -35,6 +64,11 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Predictor table seeded!'))
 
     def seed_app(self):
+        """
+        This method seeds the App table for the application to work
+        out-of-the-box.
+        """
+
         if App.objects.exists():
             self.stdout.write(self.style.SUCCESS('App table already seeded!'))
         else:
@@ -51,6 +85,11 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('App table seeded!'))
 
     def handle(self, *args, **options):
+        """
+        This method overrides the BaseCommand's handle method to run the
+        actual command logic.
+        """
+
         self.stdout.write('Seeding database...')
         self.seed_user()
         self.seed_predictor()
