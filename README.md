@@ -1,7 +1,7 @@
 # Twish
 *Twish* is a web application that allows you to host tweets classifiers (Machine Learning-based, rule-based, whatever-based). Once you have set up the app, your users can enter a search term and Twish will collect tweets based on it and classify them using the classifiers you set up.
 
-![alt Twish main page](mainpage.png)
+![alt Twish main workflow animation](flow.gif)
 
 ## Features
 - Tweets search box (uses Twitter API).
